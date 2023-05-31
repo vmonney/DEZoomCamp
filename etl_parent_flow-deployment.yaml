@@ -1,0 +1,71 @@
+###
+### A complete description of a Prefect Deployment for flow 'etl-parent-flow'
+###
+name: de-hw-4
+description: null
+version: 7eeee66cef9433e86f6ba0cefb9c0398
+# The work queue that will handle this deployment's runs
+work_queue_name: default
+work_pool_name: default-agent-pool
+tags: []
+parameters: {}
+schedule: null
+is_schedule_active: true
+infra_overrides: {}
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: etl-parent-flow
+manifest_path: null
+infrastructure:
+  type: process
+  env: {}
+  labels: {}
+  name: null
+  command: null
+  stream_output: true
+  working_dir: null
+  _block_document_id: 9b68d01e-64db-454c-aa7d-eaa1f3fef7dc
+  _block_document_name: anonymous-41329473-15e3-456d-b301-1485f8dd48c8
+  _is_anonymous: true
+  block_type_slug: process
+  _block_type_slug: process
+storage:
+  repository: https://github.com/vmonney/DEZoomCamp
+  reference: null
+  access_token: '**********'
+  include_git_objects: true
+  _block_document_id: 0d166ab4-77ea-493e-8a8a-62c64adaa8b3
+  _block_document_name: github-storage
+  _is_anonymous: false
+  block_type_slug: github
+  _block_type_slug: github
+path: ''
+entrypoint: week2_workflow_orchestration/flows/04_homework/parameterized_flow_hw.py:etl_parent_flow
+parameter_openapi_schema:
+  title: Parameters
+  type: object
+  properties:
+    months:
+      title: months
+      default:
+      - 1
+      - 2
+      position: 0
+      type: array
+      items:
+        type: integer
+    year:
+      title: year
+      default: 2021
+      position: 1
+      type: integer
+    color:
+      title: color
+      default: yellow
+      position: 2
+      type: string
+  required: null
+  definitions: null
+timestamp: '2023-05-31T12:34:57.145902+00:00'
