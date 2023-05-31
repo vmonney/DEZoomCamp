@@ -3,7 +3,7 @@
 ###
 name: de-hw-4
 description: null
-version: 7eeee66cef9433e86f6ba0cefb9c0398
+version: d5d24f78c68a17353e7879be229b5994
 # The work queue that will handle this deployment's runs
 work_queue_name: default
 work_pool_name: default-agent-pool
@@ -68,4 +68,4 @@ parameter_openapi_schema:
       type: string
   required: null
   definitions: null
-timestamp: '2023-05-31T12:34:57.145902+00:00'
+timestamp: '2023-05-31T12:42:43.375020+00:00'
