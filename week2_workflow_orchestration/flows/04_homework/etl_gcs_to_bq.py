@@ -15,8 +15,8 @@ def extract_from_gcs(color: str, year: int, month: int) -> Path:
 
 
 @task()
-def load_into_df(path: Path) -> pd.DataFrame:
-    """Load parquet file into DataFrame"""
+def read(path: Path) -> pd.DataFrame:
+    """read the data into pandas"""
     df = pd.read_parquet(path)
     return df
 
@@ -33,21 +33,32 @@ def write_bq(df: pd.DataFrame) -> None:
         chunksize=500_000,
         if_exists="append",
     )
+    return len(df)
+
+
+@flow()
+def etl_gcs_to_bq(year: int, month: int, color: str) -> None:
+    """Main ETL flow to load data into Big Query"""
+
+    path = extract_from_gcs(color, year, month)
+    df = read(path)
+    row_count = write_bq(df)
+    return row_count
 
 
 @flow(log_prints=True)
-def etl_gcs_to_bq():
-    """Main ETL flow to load data into Big Query"""
-    color = "yellow"
-    year = 2019
-    months = [2, 3]
+def etl_parent_gcs_to_bq(
+    months: list[int] = [1, 2], year: int = 2021, color: str = "yellow"
+):
+    """Main EL flow to load data into Big Query"""
+    total_rows = 0
 
     for month in months:
-        path = extract_from_gcs(color, year, month)
-        df = load_into_df(path)
-        write_bq(df)
-        print(f"Number of rows processed: {len(df)}")
+        rows = etl_gcs_to_bq(year, month, color)
+        total_rows += rows
+
+    print(total_rows)
 
 
 if __name__ == "__main__":
-    etl_gcs_to_bq()
+    etl_parent_gcs_to_bq(months=[2, 3], year=2019, color="yellow")
