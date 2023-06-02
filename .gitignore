@@ -16,3 +16,9 @@ serving_dir
 week1_basics_n_setup/1_terraform_gcp/stoked-utility-387710-3b03b2c4ef66.json
 .vscode
 **/data/**
+
+# Default .gitignore content added by dbt Cloud
+target/
+dbt_packages/
+logs/
+# end dbt Cloud content
