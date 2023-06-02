@@ -6,8 +6,8 @@ from prefect.tasks import task_input_hash
 from datetime import timedelta
 
 
-# @task(retries=3, cache_key_fn=task_input_hash, cache_expiration=timedelta(days=1))
-@task(retries=3)
+@task(retries=3, cache_key_fn=task_input_hash, cache_expiration=timedelta(days=1))
+# @task(retries=3)
 def fetch(dataset_url: str) -> pd.DataFrame:
     """Read taxi data from web into pandas DataFrame"""
 
@@ -20,6 +20,13 @@ def clean(df=pd.DataFrame) -> pd.DataFrame:
     """Fix dtype issues"""
     df.tpep_pickup_datetime = pd.to_datetime(df.tpep_pickup_datetime)
     df.tpep_dropoff_datetime = pd.to_datetime(df.tpep_dropoff_datetime)
+    df.passenger_count = df.passenger_count.astype("double")
+    df.payment_type = df.payment_type.astype("double")
+    df.RatecodeID = df.RatecodeID.astype("double")
+    df.PULocationID = df.PULocationID.astype("double")
+    df.DOLocationID = df.DOLocationID.astype("double")
+    df.VendorID = df.VendorID.astype("double")
+
     print(df.head(2))
     print(f"columns: {df.dtypes}")
     print(f"rows: {len(df)}")
@@ -57,14 +64,15 @@ def etl_web_to_gcs(year: int, month: int, color: str) -> None:
 
 @flow()
 def etl_parent_flow(
-    year: int = 2021, months: list[int] = [1, 2], color: str = "yellow"
+    years: list[int] = 2021, months: list[int] = [1, 2], color: str = "yellow"
 ):
-    for month in months:
-        etl_web_to_gcs(year, month, color)
+    for year in years:
+        for month in months:
+            etl_web_to_gcs(year, month, color)
 
 
 if __name__ == "__main__":
     color = "yellow"
     months = [2, 3]
-    year = 2019
+    year = [2019, 2020]
     etl_parent_flow(year, months, color)
