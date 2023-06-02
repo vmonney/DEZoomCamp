@@ -15,4 +15,4 @@ serving_dir
 !week_6_stream_processing/avro_example/data/rides.csv
 week1_basics_n_setup/1_terraform_gcp/stoked-utility-387710-3b03b2c4ef66.json
 .vscode
-week2_workflow_orchestration/data/
+**/data/**
